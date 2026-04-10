@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checklist — Retificadora Itatiba | Multilixo</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:system-ui,-apple-system,sans-serif;background:#f0f0f0;min-height:100vh;padding:20px;}
+  .container{max-width:680px;margin:0 auto;border-radius:12px;overflow:hidden;border:0.5px solid #b8c414;box-shadow:0 4px 24px rgba(0,0,0,0.10);}
+  .ml-topbar{background:#543976;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .ml-brand-name{font-size:22px;font-weight:700;color:#cbd619;letter-spacing:2px;}
+  .ml-brand-sub{font-size:11px;color:#c9b8de;margin-top:2px;letter-spacing:0.5px;}
+  .ml-topbar-date{font-size:12px;color:#c9b8de;}
+  .ml-hero{background:#cbd619;padding:14px 24px 12px;}
+  .ml-hero h1{font-size:16px;font-weight:600;color:#2a1d00;}
+  .ml-hero p{font-size:12px;color:#4a3800;margin-top:3px;}
+  .ml-infocard{background:#e8ec9a;border:0.5px solid #b8c414;border-radius:8px;padding:11px 16px;margin:0 20px;display:flex;align-items:flex-start;gap:10px;}
+  .ml-dot{width:6px;height:6px;border-radius:50%;background:#543976;margin-top:5px;flex-shrink:0;}
+  .ml-infocard p{font-size:13px;color:#2a1d00;line-height:1.5;}
+  .ml-pills{display:flex;gap:10px;padding:12px 20px 14px;background:#cbd619;}
+  .pill{font-size:12px;padding:5px 14px;border-radius:20px;font-weight:600;border:none;cursor:default;}
+  .pill-purple{background:#543976;color:#fff;}
+  .pill-orange{background:#f08327;color:#fff;}
+  .ml-body{background:#fff;padding:0 20px 24px;}
+  .divider{border:none;border-top:1px solid #eee;margin:14px 0;}
+  .slabel{font-size:11px;font-weight:700;color:#543976;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;}
+  .fg{display:grid;gap:10px;}
+  .fg2{grid-template-columns:1fr 1fr;}
+  .fg3{grid-template-columns:1fr 1fr 1fr;}
+  @media(max-width:480px){.fg2,.fg3{grid-template-columns:1fr;}}
+  label{font-size:13px;color:#555;display:block;margin-bottom:4px;}
+  input[type=text],input[type=number],select,textarea{width:100%;padding:9px 11px;font-size:14px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#222;font-family:inherit;transition:border-color 0.2s;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:#543976;}
+  textarea{resize:vertical;min-height:70px;}
+  .checklist{display:flex;flex-direction:column;gap:8px;}
+  .ci{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #eee;border-radius:8px;cursor:pointer;transition:background 0.12s;}
+  .ci:hover{background:#f5f8e8;}
+  .ci.on{background:#f5f8e8;border-color:#cbd619;}
+  .ci input{width:16px;height:16px;accent-color:#543976;cursor:pointer;flex-shrink:0;}
+  .ci span{font-size:14px;color:#222;}
+  .ci.on span{color:#3a2660;font-weight:500;}
+  .foto-area{border:1.5px dashed #543976;border-radius:8px;padding:1.25rem;text-align:center;cursor:pointer;transition:background 0.12s;}
+  .foto-area:hover{background:#f5f8e8;}
+  .foto-area p{font-size:13px;color:#543976;}
+  .foto-icon{font-size:28px;margin-bottom:6px;}
+  .foto-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .foto-thumb{width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #ddd;}
+  .pbar{height:6px;background:#eee;border-radius:3px;margin-top:10px;overflow:hidden;}
+  .pfill{height:100%;background:#543976;border-radius:3px;transition:width 0.3s;}
+  .plabel{font-size:12px;color:#543976;margin-top:4px;}
+  .actions{display:flex;gap:10px;margin-top:1.5rem;}
+  .btn-c{padding:11px 18px;font-size:14px;background:transparent;color:#543976;border:1px solid #543976;border-radius:8px;cursor:pointer;font-family:inherit;}
+  .btn-c:hover{background:#f5f0ff;}
+  .btn-s{flex:1;padding:11px;font-size:14px;font-weight:600;background:#f08327;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;}
+  .btn-s:hover{background:#d4711f;}
+  .overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .mbox{background:#fff;border-radius:12px;padding:1.5rem;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;}
+  .mbox h3{font-size:16px;font-weight:600;margin-bottom:6px;color:#543976;}
+  .mbox .msub{font-size:13px;color:#666;margin-bottom:1rem;}
+  .mcontent{font-size:13px;background:#f5f5f5;border-radius:8px;padding:1rem;white-space:pre-wrap;line-height:1.7;max-height:300px;overflow-y:auto;color:#222;font-family:monospace;}
+  .mactions{display:flex;gap:8px;margin-top:1rem;}
+  .btn-cl{flex:1;padding:10px;font-size:14px;background:transparent;color:#543976;border:1px solid #543976;border-radius:8px;cursor:pointer;}
+  .btn-cp{flex:1;padding:10px;font-size:14px;font-weight:600;background:#543976;color:#fff;border:none;border-radius:8px;cursor:pointer;}
+  .cpok{font-size:12px;color:#27a060;margin-top:6px;display:none;font-weight:500;}
+  .rodape{text-align:center;font-size:11px;color:#aaa;padding:12px;background:#cbd619;}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="ml-topbar">
+    <div>
+      <div class="ml-brand-name">MULTILIXO</div>
+      <div class="ml-brand-sub">Transportando Soluções, Gerando Valores</div>
+    </div>
+    <span class="ml-topbar-date" id="data-hoje"></span>
+  </div>
+
+  <div class="ml-hero">
+    <h1>Gestão de Envio para Retífica</h1>
+    <p>Checklist obrigatório antes de enviar o veículo à Retificadora Itatiba</p>
+  </div>
+
+  <div style="background:#cbd619;">
+    <div class="ml-infocard">
+      <div class="ml-dot"></div>
+      <p>Preencha todos os campos e verifique os itens antes de gerar o resumo para enviar à Retificadora Itatiba.</p>
+    </div>
+    <div class="ml-pills">
+      <span class="pill pill-purple">Checklist de envio</span>
+      <span class="pill pill-orange">Retificadora Itatiba</span>
+    </div>
+  </div>
+
+  <div class="ml-body">
+    <div style="padding-top:16px;">
+      <div class="pbar"><div class="pfill" id="prog" style="width:0%"></div></div>
+      <p class="plabel" id="prog-label">0% preenchido</p>
+    </div>
+
+    <div class="divider"></div>
+    <div class="slabel">Identificação do veículo</div>
+    <div class="fg fg2">
+      <div><label>Placa</label><input type="text" id="placa" placeholder="ABC-1234" oninput="upd()"/></div>
+      <div><label>Quilometragem</label><input type="number" id="km" placeholder="Ex: 85000" oninput="upd()"/></div>
+    </div>
+    <div class="fg fg3" style="margin-top:10px;">
+      <div><label>Marca</label><input type="text" id="marca" placeholder="Ex: Volkswagen" oninput="upd()"/></div>
+      <div><label>Modelo</label><input type="text" id="modelo" placeholder="Ex: Delivery 9.170" oninput="upd()"/></div>
+      <div><label>Ano</label><input type="number" id="ano" placeholder="Ex: 2020" oninput="upd()"/></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="slabel">Informações do serviço</div>
+    <div class="fg fg2" style="margin-bottom:10px;">
+      <div><label>Data de entrada</label><input type="text" id="data" placeholder="DD/MM/AAAA" oninput="upd()"/></div>
+      <div><label>Solicitante</label><input type="text" id="solicitante" placeholder="Nome do responsável" oninput="upd()"/></div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label>Tipo de serviço</label>
+      <select id="tipo" onchange="upd()">
+        <option value="">Selecione...</option>
+        <option>Retífica de motor completa</option>
+        <option>Retífica de cabeçote</option>
+        <option>Retífica de bloco</option>
+        <option>Troca de anéis e bronzinas</option>
+        <option>Manutenção geral</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label>Defeito relatado / motivo do envio</label>
+      <textarea id="defeito" placeholder="Descreva o defeito ou sintoma relatado..." oninput="upd()"></textarea>
+    </div>
+    <div>
+      <label>Observações adicionais</label>
+      <textarea id="obs" placeholder="Histórico do veículo, peças acompanhando, urgência..." oninput="upd()" style="min-height:54px;"></textarea>
+    </div>
+
+    <div class="divider"></div>
+    <div class="slabel">Evidências visuais</div>
+    <div class="foto-area" onclick="document.getElementById('fi').click()">
+      <div class="foto-icon">📷</div>
+      <p>Clique para adicionar fotos do defeito</p>
+    </div>
+    <input type="file" id="fi" accept="image/*" multiple style="display:none;" onchange="addFotos(this)"/>
+    <div class="foto-list" id="foto-list"></div>
+
+    <div class="divider"></div>
+    <div class="slabel">Verificação antes do envio</div>
+    <div class="checklist" id="checklist"></div>
+
+    <div class="actions">
+      <button class="btn-c" onclick="limpar()">Limpar</button>
+      <button class="btn-s" onclick="gerarResumo()">Gerar resumo para Itatiba</button>
+    </div>
+  </div>
+
+  <div class="rodape">Multilixo &copy; 2026 — Checklist Retificadora Itatiba</div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="mbox">
+    <h3>Resumo — Retificadora Itatiba</h3>
+    <p class="msub">Copie e envie por WhatsApp ou e-mail.</p>
+    <div class="mcontent" id="mtext"></div>
+    <p class="cpok" id="cpok">✓ Copiado com sucesso!</p>
+    <div class="mactions">
+      <button class="btn-cl" onclick="fechar()">Fechar</button>
+      <button class="btn-cp" onclick="copiar()">Copiar texto</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const itens=["Placa e KM conferidos","Defeito descrito detalhadamente","Fotos do defeito adicionadas","Peças avulsas identificadas e separadas","Motor/cabeçote limpo externamente","Fluidos drenados (óleo, água)","Número do motor anotado","Responsável pelo veículo identificado"];
+const checks={};
+itens.forEach(i=>checks[i]=false);
+const hoje=new Date();
+document.getElementById('data-hoje').textContent=hoje.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+function renderCL(){
+  const c=document.getElementById('checklist');c.innerHTML='';
+  itens.forEach(item=>{
+    const d=document.createElement('div');
+    d.className='ci'+(checks[item]?' on':'');
+    d.innerHTML='<input type="checkbox" '+(checks[item]?'checked':'')+'/><span>'+item+'</span>';
+    d.onclick=function(){checks[item]=!checks[item];renderCL();upd();};
+    c.appendChild(d);
+  });
+}
+function upd(){
+  const campos=['placa','km','marca','modelo','ano','data','tipo','defeito'];
+  const p=campos.filter(function(id){return document.getElementById(id)&&document.getElementById(id).value.trim();}).length;
+  const ch=Object.values(checks).filter(Boolean).length;
+  const pct=Math.round(((p+ch)/(campos.length+itens.length))*100);
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=pct+'% preenchido';
+}
+function addFotos(inp){
+  const list=document.getElementById('foto-list');
+  Array.from(inp.files).forEach(function(f){
+    const img=document.createElement('img');
+    img.src=URL.createObjectURL(f);img.className='foto-thumb';
+    list.appendChild(img);
+  });upd();
+}
+function gerarResumo(){
+  function v(id){var el=document.getElementById(id);return el&&el.value.trim()?el.value.trim():'—';}
+  const fc=document.getElementById('foto-list').children.length;
+  const cs=itens.map(function(i){return'  ['+(checks[i]?'X':' ')+'] '+i;}).join('\n');
+  document.getElementById('mtext').textContent='━━━━━━━━━━━━━━━━━━━━━━━━\nMULTILIXO — ENVIO PARA RETIFICADORA ITATIBA\n━━━━━━━━━━━━━━━━━━━━━━━━\nVEÍCULO\n  Placa: '+v('placa')+'\n  KM: '+v('km')+' km\n  Marca/Modelo: '+v('marca')+' '+v('modelo')+'\n  Ano: '+v('ano')+'\n  Data entrada: '+v('data')+'\n  Solicitante: '+v('solicitante')+'\n\nSERVIÇO\n  Tipo: '+v('tipo')+'\n  Defeito: '+v('defeito')+'\n  Obs: '+(v('obs')||'—')+'\n\nEVIDÊNCIAS\n  Fotos anexadas: '+fc+'\n\nVERIFICAÇÕES\n'+cs+'\n━━━━━━━━━━━━━━━━━━━━━━━━';
+  document.getElementById('overlay').style.display='flex';
+}
+function fechar(){document.getElementById('overlay').style.display='none';}
+function copiar(){
+  var txt=document.getElementById('mtext').textContent;
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){mostrarOk();});}
+  else{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);mostrarOk();}
+}
+function mostrarOk(){var el=document.getElementById('cpok');el.style.display='block';setTimeout(function(){el.style.display='none';},2500);}
+function limpar(){
+  ['placa','km','marca','modelo','ano','data','solicitante','tipo','defeito','obs'].forEach(function(id){document.getElementById(id).value='';});
+  itens.forEach(function(i){checks[i]=false;});
+  document.getElementById('foto-list').innerHTML='';
+  document.getElementById('overlay').style.display='none';
+  renderCL();upd();
+}
+renderCL();
+</script>
+</body>
+</html>
