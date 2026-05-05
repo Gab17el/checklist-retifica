@@ -256,7 +256,7 @@ const INV={"DEQ4001":{"equip":"10","modelo":"CG 125 Titan","fabricante":"Honda",
 
 const CLIENT_ID='903786df-c375-4548-abf9-17d8e1e810ac';
 const TENANT_ID='5822729f-9e44-4c26-a813-30ad6a1f1e21';
-const FILE_ID='39671AD9-1827-41CA-97F9-ACB3EECBDDCE';
+const FILE_ID='01JQVRWZGZDJTTSJYYZJAZP6NMWPXMXXOO';
 const UPN='gabriel_santos_multilixo_com_br';
 const WS_NAME='Plan1';
 const SCOPES=['Files.ReadWrite','User.Read'];
@@ -395,7 +395,7 @@ async function salvarExcel(){
   const linha=[[agora,gv('retificadora'),gv('placa'),gv('km'),gv('fabricante'),gv('modelo'),gv('ano'),
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')]];
-  const base='https://graph.microsoft.com/v1.0/drives/b!WwdINdFNp0uqWlyU8DrVgwuhYow4lehAv3d88M7aF3GQAbL7RsO5R4d7xdwPV4PS/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
+  const base='https://graph.microsoft.com/v1.0/me/drive/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
   try{
     const ur=await fetch(base+'/usedRange',{headers:{Authorization:'Bearer '+accessToken}});
     let nextRow=2;
