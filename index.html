@@ -278,12 +278,12 @@ async function renovarToken(){
 }
 async function fazerLogin(){
   if(!msalApp)return;
-  try{const r=await msalApp.loginPopup({scopes:SCOPES});accessToken=r.accessToken;msalApp.setActiveAccount(r.account);atualizarUI(r.account);}
-  catch(e){console.log('Login cancelado');}
+  try{await msalApp.loginRedirect({scopes:SCOPES});}
+  catch(e){console.log(e);}
 }
 function fazerLogout(){
   if(!msalApp)return;
-  msalApp.logoutPopup();accessToken=null;
+  msalApp.logoutRedirect();accessToken=null;
   document.getElementById('btn-login').style.display='';
   document.getElementById('btn-logout').style.display='none';
   document.getElementById('user-tag').style.display='none';
