@@ -416,20 +416,50 @@ async function salvarExcel(){
   if(!accessToken){await renovarToken();}
   if(!accessToken){setXS('Faca login com Microsoft antes de salvar.','err');return;}
   const btn=document.getElementById('btn-excel');btn.disabled=true;
+  setXS('Buscando planilha...','loading');
+
+  // Busca a planilha pelo nome nos arquivos do usuario e compartilhados
+  let fileId=null, driveId=null;
+  try{
+    // Tenta no drive pessoal primeiro
+    const r1=await fetch('https://graph.microsoft.com/v1.0/me/drive/root/search(q='Checklist retifica')',{headers:{Authorization:'Bearer '+accessToken}});
+    if(r1.ok){
+      const d1=await r1.json();
+      const f=d1.value&&d1.value.find(x=>x.name&&x.name.toLowerCase().includes('checklist retifica')&&x.name.endsWith('.xlsx'));
+      if(f){fileId=f.id;driveId=f.parentReference&&f.parentReference.driveId;}
+    }
+    // Se nao achou, busca nos compartilhados
+    if(!fileId){
+      const r2=await fetch('https://graph.microsoft.com/v1.0/me/drive/sharedWithMe',{headers:{Authorization:'Bearer '+accessToken}});
+      if(r2.ok){
+        const d2=await r2.json();
+        const f=d2.value&&d2.value.find(x=>x.name&&x.name.toLowerCase().includes('checklist retifica')&&x.name.endsWith('.xlsx'));
+        if(f){fileId=f.remoteItem&&f.remoteItem.id;driveId=f.remoteItem&&f.remoteItem.parentReference&&f.remoteItem.parentReference.driveId;}
+      }
+    }
+  }catch(e){}
+
+  if(!fileId){setXS('Planilha nao encontrada. Verifique o acesso.','err');btn.disabled=false;return;}
+
   setXS('Salvando na planilha...','loading');
   const agora=new Date().toLocaleString('pt-BR');
   const fc=document.getElementById('foto-list').children.length;
   const linha=[[agora,gv('retificadora'),gv('placa'),gv('km'),gv('fabricante'),gv('modelo'),gv('ano'),
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')]];
-  const base='https://graph.microsoft.com/v1.0/me/drive/items/01JQVRWZF4C7CA7XGKM5DL643ENW7A7M7F/workbook/worksheets(\'Checklist_retifica\')';
+  
+  const baseUrl=driveId
+    ? 'https://graph.microsoft.com/v1.0/drives/'+driveId+'/items/'+fileId
+    : 'https://graph.microsoft.com/v1.0/me/drive/items/'+fileId;
+  const base=baseUrl+'/workbook/worksheets(\'Checklist_retifica\')';
+
   try{
     const ur=await fetch(base+'/usedRange',{headers:{Authorization:'Bearer '+accessToken}});
     let nextRow=2;
     if(ur.ok){const ud=await ur.json();const m=(ud.address||'').match(/(\d+)$/);if(m)nextRow=parseInt(m[1])+1;}
     if(nextRow===2){
       const h=[['Data/Hora','Retificadora','Placa','KM','Fabricante','Modelo','Ano','Classe Mec.','Classe Op.','Filial','N Equip','Data Entrada','Solicitante','Tipo','Defeito','Obs','Fotos',...itens]];
-      await fetch(base+'/range(address=\'A1:'+col(h[0].length)+'1\')',{method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:h})});
+      await fetch(baseUrl+'/workbook/worksheets(\'Checklist_retifica\')/range(address=\'A1:'+col(h[0].length)+'1\')',{method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:h})});
     }
     const nc=linha[0].length;
     const res=await fetch(base+'/range(address=\'A'+nextRow+':'+col(nc)+nextRow+'\')',{method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'},body:JSON.stringify({values:linha})});
@@ -438,6 +468,7 @@ async function salvarExcel(){
   }catch(e){setXS('Falha: '+e.message,'err');}
   finally{btn.disabled=false;}
 }
+
 function col(n){let s='';while(n>0){s=String.fromCharCode(65+(n-1)%26)+s;n=Math.floor((n-1)/26);}return s;}
 function setXS(msg,tipo){const el=document.getElementById('xstatus');el.textContent=msg;el.className='xstatus'+(tipo?' '+tipo:'');}
 function limpar(){
