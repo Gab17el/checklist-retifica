@@ -196,7 +196,7 @@
     <div class="divider"></div>
     <div class="slabel">Informacoes do servico</div>
     <div class="fg fg2" style="margin-bottom:10px;">
-      <div><label>Data de entrada</label><input type="text" id="data-entrada" placeholder="DD/MM/AAAA" oninput="upd()"/></div>
+      <div><label>Data de entrada</label><input type="text" id="data-entrada" placeholder="DD/MM/AAAA" maxlength="10" oninput="mascaraData(this);upd()"/></div>
       <div><label>Solicitante</label><input type="text" id="solicitante" placeholder="Nome do responsavel" oninput="upd()"/></div>
     </div>
     <div style="margin-bottom:10px;">
@@ -423,9 +423,4 @@ function limpar(){
   document.getElementById('overlay').classList.remove('open');
   renderCL();upd();
 }
-renderCL();
-iniciarMSAL();
-
-</script>
-</body>
-</html>
+function mascaraData
