@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" translate="no">
 <head>
 <meta charset="UTF-8"/>
+<meta name="google" content="notranslate"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Checklist Retificadora | Multilixo</title>
 <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
@@ -423,4 +424,15 @@ function limpar(){
   document.getElementById('overlay').classList.remove('open');
   renderCL();upd();
 }
-function mascaraData
+function mascaraData(el){
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>=6)v=v.slice(0,5)+'/'+v.slice(5,9);
+  el.value=v;
+}
+renderCL();
+iniciarMSAL();
+
+</script>
+</body>
+</html>
