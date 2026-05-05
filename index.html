@@ -263,7 +263,7 @@ const SCOPES=['Files.ReadWrite','User.Read'];
 let msalApp=null, accessToken=null;
 
 async function iniciarMSAL(){
-  const cfg={auth:{clientId:CLIENT_ID,authority:'https://login.microsoftonline.com/'+TENANT_ID,redirectUri:'https://grmultilixo-my.sharepoint.com/personal/gabriel_santos_multilixo_com_br/_layouts/15/download.aspx'},cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}};
+  const cfg={auth:{clientId:CLIENT_ID,authority:'https://login.microsoftonline.com/'+TENANT_ID,redirectUri:'https://gab17el.github.io/checklist-retifica/'},cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}};
   msalApp=new msal.PublicClientApplication(cfg);
   await msalApp.initialize();
   try{const r=await msalApp.handleRedirectPromise();if(r)accessToken=r.accessToken;}catch(e){}
