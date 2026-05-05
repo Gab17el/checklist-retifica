@@ -395,7 +395,7 @@ async function salvarExcel(){
   const linha=[[agora,gv('retificadora'),gv('placa'),gv('km'),gv('fabricante'),gv('modelo'),gv('ano'),
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')]];
-  const base='https://graph.microsoft.com/v1.0/users/gabriel_santos@multilixo.com.br/drive/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
+  const base='https://graph.microsoft.com/v1.0/drives/b!WwdINdFNp0uqWlyU8DrVgwuhYow4lehAv3d88M7aF3GQAbL7RsO5R4d7xdwPV4PS/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
   try{
     const ur=await fetch(base+'/usedRange',{headers:{Authorization:'Bearer '+accessToken}});
     let nextRow=2;
