@@ -422,7 +422,7 @@ async function salvarExcel(){
   const linha=[[agora,gv('retificadora'),gv('placa'),gv('km'),gv('fabricante'),gv('modelo'),gv('ano'),
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')]];
-  const base='https://graph.microsoft.com/v1.0/users/674f6f6d-a4c8-444c-9577-c01e595ffcce/drive/items/01JQVRWZGZDJTTSJYYZJAZP6NMWPXMXXOO/workbook/worksheets(\'Checklist_retifica\')';
+  const base='https://graph.microsoft.com/v1.0/me/drive/items/01JQVRWZF4C7CA7XGKM5DL643ENW7A7M7F/workbook/worksheets(\'Checklist_retifica\')';
   try{
     const ur=await fetch(base+'/usedRange',{headers:{Authorization:'Bearer '+accessToken}});
     let nextRow=2;
