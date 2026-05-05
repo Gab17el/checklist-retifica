@@ -274,8 +274,17 @@ async function iniciarMSAL(){
 }
 async function renovarToken(){
   if(!msalApp)return;
-  try{const r=await msalApp.acquireTokenSilent({scopes:SCOPES,account:msalApp.getActiveAccount()});accessToken=r.accessToken;}
-  catch(e){accessToken=null;}
+  const account=msalApp.getActiveAccount();
+  if(!account)return;
+  try{
+    const r=await msalApp.acquireTokenSilent({scopes:SCOPES,account:account});
+    accessToken=r.accessToken;
+  }catch(e){
+    try{
+      const r=await msalApp.acquireTokenPopup({scopes:SCOPES,account:account});
+      accessToken=r.accessToken;
+    }catch(e2){accessToken=null;}
+  }
 }
 async function fazerLogin(){
   if(!msalApp)return;
@@ -386,6 +395,23 @@ function copiar(){
 }
 function okCopy(){const el=document.getElementById('cpok');el.style.display='block';setTimeout(()=>el.style.display='none',2500);}
 
+const CLIENT_SECRET_VAL='PK78Q~3JNRl7swvYV103iy~pJP~E7DcXs~BWDav_';
+
+async function getAppToken(){
+  const resp=await fetch('https://login.microsoftonline.com/5822729f-9e44-4c26-a813-30ad6a1f1e21/oauth2/v2.0/token',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:new URLSearchParams({
+      grant_type:'client_credentials',
+      client_id:'903786df-c375-4548-abf9-17d8e1e810ac',
+      client_secret:CLIENT_SECRET_VAL,
+      scope:'https://graph.microsoft.com/.default'
+    })
+  });
+  const data=await resp.json();
+  return data.access_token;
+}
+
 async function salvarExcel(){
   if(!accessToken){await renovarToken();}
   if(!accessToken){setXS('Faca login com Microsoft antes de salvar.','err');return;}
@@ -396,7 +422,7 @@ async function salvarExcel(){
   const linha=[[agora,gv('retificadora'),gv('placa'),gv('km'),gv('fabricante'),gv('modelo'),gv('ano'),
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')]];
-  const base='https://graph.microsoft.com/v1.0/users/674f6f6d-a4c8-444c-9577-c01e595ffcce/drive/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
+  const base='https://graph.microsoft.com/v1.0/users/674f6f6d-a4c8-444c-9577-c01e595ffcce/drive/items/01JQVRWZGZDJTTSJYYZJAZP6NMWPXMXXOO/workbook/worksheets(\'Checklist_retifica\')';
   try{
     const ur=await fetch(base+'/usedRange',{headers:{Authorization:'Bearer '+accessToken}});
     let nextRow=2;
@@ -425,14 +451,4 @@ function limpar(){
   renderCL();upd();
 }
 function mascaraData(el){
-  let v=el.value.replace(/\D/g,'');
-  if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);
-  if(v.length>=6)v=v.slice(0,5)+'/'+v.slice(5,9);
-  el.value=v;
-}
-renderCL();
-iniciarMSAL();
-
-</script>
-</body>
-</html>
+  le
