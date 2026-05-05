@@ -451,4 +451,14 @@ function limpar(){
   renderCL();upd();
 }
 function mascaraData(el){
-  le
+  let v=el.value.replace(/\D/g,'');
+  if(v.length>=3)v=v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>=6)v=v.slice(0,5)+'/'+v.slice(5,9);
+  el.value=v;
+}
+renderCL();
+iniciarMSAL();
+
+</script>
+</body>
+</html>
