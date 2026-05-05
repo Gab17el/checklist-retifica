@@ -421,7 +421,7 @@ async function salvarExcel(){
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')];
   try{
-    const res=await fetch('https://script.google.com/macros/s/AKfycbzj44YydOKB-nsbul476eLnxpd1K4QeZx3x7R9znQ4svYGJ1ZsEutTx9vjSW3wek5HY/exec',{
+    const res=await fetch('https://script.google.com/macros/s/AKfycbxXU9LqX9DFDhcdeqWYoBIQfukZG8YHMbx_hfZDeQ4RLlaCb6ZySVyb6DVF2HPeBn8NZQ/exec',{
       method:'POST',
       body:JSON.stringify({values:valores}),
     });
