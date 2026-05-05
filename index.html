@@ -258,7 +258,7 @@ const CLIENT_ID='903786df-c375-4548-abf9-17d8e1e810ac';
 const TENANT_ID='5822729f-9e44-4c26-a813-30ad6a1f1e21';
 const FILE_ID='01JQVRWZGZDJTTSJYYZJAZP6NMWPXMXXOO';
 const UPN='gabriel_santos_multilixo_com_br';
-const WS_NAME='Plan1';
+const WS_NAME='Checklist_retifica';
 const SCOPES=['Files.ReadWrite','User.Read'];
 let msalApp=null, accessToken=null;
 
@@ -395,7 +395,7 @@ async function salvarExcel(){
   const linha=[[agora,gv('retificadora'),gv('placa'),gv('km'),gv('fabricante'),gv('modelo'),gv('ano'),
     gv('classeMec'),gv('classeOp'),gv('filial'),gv('equip'),gv('data-entrada'),gv('solicitante'),
     gv('tipo'),gv('defeito'),gv('obs'),fc,...itens.map(i=>checks[i]?'Sim':'Nao')]];
-  const base='https://graph.microsoft.com/v1.0/me/drive/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
+  const base='https://graph.microsoft.com/v1.0/users/674f6f6d-a4c8-444c-9577-c01e595ffcce/drive/items/'+FILE_ID+'/workbook/worksheets(\''+WS_NAME+'\')';
   try{
     const ur=await fetch(base+'/usedRange',{headers:{Authorization:'Bearer '+accessToken}});
     let nextRow=2;
